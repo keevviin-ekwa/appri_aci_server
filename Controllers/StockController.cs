@@ -58,11 +58,54 @@ namespace ApproACI.Controllers
 
             try
             {
-                var _stock = _mapper.Map<Stock>(stockDTO);
-                _stock.DateModification = DateTime.Now;
-                _stock.DateCreation = DateTime.Now;
-                await _unitOfWork.Stocks.Insert(_stock);
-                _unitOfWork.Save();
+                //var _stock = _mapper.Map<Stock>(stockDTO);
+                //_stock.DateModification = DateTime.Now;
+                //_stock.DateCreation = DateTime.Now;
+                var Produits= await _unitOfWork.Produits.GetAll();
+              
+                var produit = Produits[0];
+
+
+
+                var nom = await _unitOfWork.MatiereProduits.Get(mp => mp.MatiereId == stockDTO.MatiereId && mp.ProduitId == produit.Id);
+                var LastdayOfYear = new DateTime(DateTime.Now.Year, 12, 31);
+                var numberOfMonht = ((LastdayOfYear.Year - stockDTO.date.Year) * 12) + LastdayOfYear.Month - stockDTO.date.Month;
+                var currentMonthNumber = int.Parse(stockDTO.date.ToString("MM"));
+                var currentMonth = stockDTO.date;
+                var i = currentMonthNumber;
+                var stockDebut = stockDTO.StockDebut;
+                var objectif = await _unitOfWork.Objectifs.Get(o => o.Mois == stockDTO.date.ToString("MM/yyyy"));
+                var consommation = objectif.ObjectifGF * nom.ContributionMatiereGF / 100 + objectif.ObjectifPF * nom.contributionMatierePF / 100;
+                var stockFin = stockDebut - consommation;
+                do
+                {
+                  
+                    var Stock = new Stock
+                    {
+                        MatiereId = stockDTO.MatiereId,
+      
+                        Consommation = consommation,
+                        StockDebut = stockDebut,
+                        StockFin = stockFin,
+                        Mois = currentMonth.ToString("MM/yyyy"),
+                    };
+
+
+
+                    await _unitOfWork.Stocks.Insert(Stock);
+                    _unitOfWork.Save();
+
+                    currentMonth = currentMonth.AddMonths(1);
+                    objectif = await _unitOfWork.Objectifs.Get(o => o.Mois == currentMonth.ToString("MM/yyyy"));
+                    consommation = objectif.ObjectifGF * nom.ContributionMatiereGF / 100 + objectif.ObjectifPF * nom.contributionMatierePF / 100;
+                    stockDebut = stockFin;
+                    stockFin = stockDebut - consommation;
+                    currentMonthNumber++;
+                }
+                while (currentMonthNumber<12);
+
+
+
                 ResponseObject<Stock> response = new ResponseObject<Stock>
                 {
                     Data =null,

@@ -4,14 +4,16 @@ using ApproACI.DLA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApproACI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230524085010_add_commandes_table")]
+    partial class add_commandes_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,8 +170,6 @@ namespace ApproACI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProduitId");
-
                     b.ToTable("Objectif");
                 });
 
@@ -213,9 +213,6 @@ namespace ApproACI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Consommation")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
 
@@ -228,9 +225,6 @@ namespace ApproACI.Migrations
                     b.Property<string>("Mois")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
                     b.Property<double>("StockDebut")
                         .HasColumnType("float");
 
@@ -240,8 +234,6 @@ namespace ApproACI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MatiereId");
-
-                    b.HasIndex("ProduitId");
 
                     b.ToTable("Stocks");
                 });
@@ -342,17 +334,6 @@ namespace ApproACI.Migrations
                     b.Navigation("Produit");
                 });
 
-            modelBuilder.Entity("ApproACI.Models.Objectif", b =>
-                {
-                    b.HasOne("ApproACI.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produit");
-                });
-
             modelBuilder.Entity("ApproACI.Models.Produit", b =>
                 {
                     b.HasOne("ApproACI.Models.Marque", "Marque")
@@ -372,15 +353,7 @@ namespace ApproACI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApproACI.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Matiere");
-
-                    b.Navigation("Produit");
                 });
 
             modelBuilder.Entity("MatiereProduit", b =>

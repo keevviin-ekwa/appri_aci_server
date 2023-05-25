@@ -12,7 +12,9 @@ namespace ApproACI.Models
 
         public string Mois { get; set; }
 
+        public double Consommation { get; set; }
 
+      
         public int MatiereId { get; set; }
 
         public Matiere Matiere { get; set; }

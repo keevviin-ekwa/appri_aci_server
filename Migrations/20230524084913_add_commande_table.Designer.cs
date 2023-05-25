@@ -4,46 +4,22 @@ using ApproACI.DLA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApproACI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230524084913_add_commande_table")]
+    partial class add_commande_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApproACI.Models.Commande", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("DateLivraison")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MatiereId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Quantite")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SemaineCommande")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MatiereId");
-
-                    b.ToTable("Commandes");
-                });
 
             modelBuilder.Entity("ApproACI.Models.DroitsAcces", b =>
                 {
@@ -168,8 +144,6 @@ namespace ApproACI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProduitId");
-
                     b.ToTable("Objectif");
                 });
 
@@ -213,9 +187,6 @@ namespace ApproACI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Consommation")
-                        .HasColumnType("float");
-
                     b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
 
@@ -228,9 +199,6 @@ namespace ApproACI.Migrations
                     b.Property<string>("Mois")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
                     b.Property<double>("StockDebut")
                         .HasColumnType("float");
 
@@ -240,8 +208,6 @@ namespace ApproACI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MatiereId");
-
-                    b.HasIndex("ProduitId");
 
                     b.ToTable("Stocks");
                 });
@@ -312,17 +278,6 @@ namespace ApproACI.Migrations
                     b.ToTable("MatiereProduit");
                 });
 
-            modelBuilder.Entity("ApproACI.Models.Commande", b =>
-                {
-                    b.HasOne("ApproACI.Models.Matiere", "Matiere")
-                        .WithMany()
-                        .HasForeignKey("MatiereId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Matiere");
-                });
-
             modelBuilder.Entity("ApproACI.Models.MatiereProduit", b =>
                 {
                     b.HasOne("ApproACI.Models.Matiere", "Matiere")
@@ -338,17 +293,6 @@ namespace ApproACI.Migrations
                         .IsRequired();
 
                     b.Navigation("Matiere");
-
-                    b.Navigation("Produit");
-                });
-
-            modelBuilder.Entity("ApproACI.Models.Objectif", b =>
-                {
-                    b.HasOne("ApproACI.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Produit");
                 });
@@ -372,15 +316,7 @@ namespace ApproACI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApproACI.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Matiere");
-
-                    b.Navigation("Produit");
                 });
 
             modelBuilder.Entity("MatiereProduit", b =>

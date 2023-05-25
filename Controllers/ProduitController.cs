@@ -113,7 +113,7 @@ namespace ApproACI.Controllers
                 ResponseObject<Produit> response = new ResponseObject<Produit>
                 {
                     Data = null,
-                    Status = ResponseStatus.SUCCESSFUL.ToString(),
+                    Status = ResponseStatus.FAILED.ToString(),
                     Message = "Une erreur s'est produite",
                     DevelopperMessage = "SUCCES",
                 };

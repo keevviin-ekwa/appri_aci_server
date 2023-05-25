@@ -24,6 +24,9 @@ namespace ApproACI.Repositories.Implementations
 
         private IGenericRepository<DroitsAcces> _droitsAccess { get; set; }
         private IGenericRepository<MatiereProduit> _matiereProduits { get; set; }
+
+        private IGenericRepository<Commande> _commandes { get; set; }
+
         public UnitOfWork(DatabaseContext context)
         {
             _context = context;
@@ -47,6 +50,8 @@ namespace ApproACI.Repositories.Implementations
         public IGenericRepository<User> Users => _users ??= new GenericRepository<User>(_context);
 
         public IGenericRepository<DroitsAcces> DroitsAcces => _droitsAccess ??= new GenericRepository<DroitsAcces>(_context);
+
+        public IGenericRepository<Commande> Commandes => _commandes ??= new GenericRepository<Commande>(_context);
 
         public void Save()
         {

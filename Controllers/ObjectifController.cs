@@ -28,7 +28,7 @@ namespace ApproACI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll() { 
 
-            var Objectifs= await _unitOfWork.Objectifs.GetAll();
+            var Objectifs= await _unitOfWork.Objectifs.GetAll(includes: new List<string>{"Produit"});
             ResponseObject<List<Objectif>> response = new ResponseObject<List<Objectif>>
             {
                 Data = (List<Objectif>)Objectifs,
@@ -43,7 +43,7 @@ namespace ApproACI.Controllers
         [HttpGet("Id")]
         public async Task<IActionResult> GetById(int Id)
         {
-            var Objectif = await _unitOfWork.Objectifs.Get(p => p.Id == Id);
+            var Objectif = await _unitOfWork.Objectifs.Get(p => p.Id == Id, includes:new List<string> { "Produit"});
             ResponseObject<Objectif> response = new ResponseObject<Objectif>
             {
                 Data = (Objectif)Objectif,
@@ -68,6 +68,22 @@ namespace ApproACI.Controllers
             return Ok(response);
         }
 
+
+
+        [HttpGet]
+        [Route("getObjectifByyear/{Year}")]
+        public async Task<IActionResult> GetByYear(string Year)
+        {
+            var Objectif = await _unitOfWork.Objectifs.GetAll(p => p.Mois.Contains(Year));
+            ResponseObject<List<Objectif>> response = new ResponseObject<List<Objectif>>
+            {
+                Data = (List<Objectif>)Objectif,
+                Status = ResponseStatus.SUCCESSFUL.ToString(),
+                Message = "",
+                DevelopperMessage = "SUCCES",
+            };
+            return Ok(response);
+        }
 
 
         [HttpPut]
@@ -115,7 +131,7 @@ namespace ApproACI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateObject([FromBody] ObjectifDTO objectifDTO)
+        public async Task<IActionResult> CreateObjectif([FromBody] ObjectifDTO objectifDTO)
         {
 
             try
@@ -125,8 +141,6 @@ namespace ApproACI.Controllers
 
                 if (temp == null)
                 {
-
-
 
                     var _objectif = _mapper.Map<Objectif>(objectifDTO);
 

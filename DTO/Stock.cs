@@ -5,7 +5,7 @@ namespace ApproACI.DTO
 {
     public class StockDTO
     {
-        public int Id { get; set; }
+       
 
         public double StockDebut { get; set; }
 
@@ -13,8 +13,12 @@ namespace ApproACI.DTO
 
         public string Mois { get; set; }
 
-
+        public int Consomation { get; set; }
         public int MatiereId { get; set; }
+
+        public DateTime date { get; set; }
+
+
 
     }
 }

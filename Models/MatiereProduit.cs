@@ -13,6 +13,8 @@ namespace ApproACI.Models
         public double ContributionMatiereGF { get; set; }
          
         public double contributionMatierePF { get; set; }   
+
+
         public Produit Produit { get; set; }    
          
         public Matiere Matiere { get; set; }  

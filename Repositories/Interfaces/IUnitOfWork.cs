@@ -20,6 +20,8 @@ namespace ApproACI.Repositories.Interfaces
         public IGenericRepository<DroitsAcces> DroitsAcces { get; }
         public IGenericRepository<MatiereProduit> MatiereProduits { get; }
 
+        public IGenericRepository<Commande> Commandes { get; }
+
         public void Save();
     }
 }
