@@ -36,6 +36,8 @@ namespace ApproACI.Models
         public DateTime DateModification { get; set; }
         public List<Stock> Stocks { get; set; } = new List<Stock>();
         public List<Produit> Produits { get; set; }
+
+        public List <Commande> Commandes { get; set; }  
         public List<MatiereProduit> MatiereProduits { get;}
     }
 }

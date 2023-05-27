@@ -31,7 +31,7 @@ namespace ApproACI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var Matieres = await _unitOfWork.Matieres.GetAll();
+            var Matieres = await _unitOfWork.Matieres.GetAll(includes: new List<string>{"Commandes"});
           //  var _matiere = _mapper.Map<List<MatiereDTO>>(Matieres);
             ResponseObject<List<Matiere>> response = new ResponseObject<List<Matiere>>
             {
@@ -53,11 +53,20 @@ namespace ApproACI.Controllers
             return Ok(Produit);
         }
 
-    [HttpGet("Id")]
+        [HttpGet]
+        [Route("GetMatiereById/{Id}")]
         public async Task<IActionResult> GetById(int Id)
         {
-            var Produit = await _unitOfWork.Matieres.Get(p => p.Id == Id);
-            return Ok(Produit);
+            var Matiere = await _unitOfWork.Matieres.Get(p => p.Id == Id,includes: new List<string> { "Commandes"});
+            ResponseObject<Matiere> response = new ResponseObject<Matiere>
+            {
+                Data = (Matiere)Matiere,
+                Status = ResponseStatus.SUCCESSFUL.ToString(),
+                Message = "",
+                DevelopperMessage = "SUCCES",
+            };
+            return Ok(response);
+          
         }
 
         [HttpPost]

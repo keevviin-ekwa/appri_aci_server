@@ -24,6 +24,9 @@ namespace ApproACI.DLA
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Commande> Commandes { get; set; }
 
+        public virtual DbSet<Livraison> Livraisons { get; set; }
+
+
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options):base(options)
         {

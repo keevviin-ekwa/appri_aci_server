@@ -4,14 +4,16 @@ using ApproACI.DLA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApproACI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230526070552_add_product_change_consommation_field_type_stock_tables")]
+    partial class add_product_change_consommation_field_type_stock_tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,20 +28,17 @@ namespace ApproACI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateCommande")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateLivraison")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DateLivraison")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MatiereId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Quantite")
-                        .HasColumnType("float");
+                    b.Property<string>("Quantite")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SemaineCommande")
-                        .HasColumnType("int");
+                    b.Property<string>("SemaineCommande")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -70,29 +69,6 @@ namespace ApproACI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DroitAcces");
-                });
-
-            modelBuilder.Entity("ApproACI.Models.Livraison", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CommandeId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateLivraison")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Quantite")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommandeId");
-
-                    b.ToTable("Livraisons");
                 });
 
             modelBuilder.Entity("ApproACI.Models.Marque", b =>
@@ -342,17 +318,6 @@ namespace ApproACI.Migrations
                         .IsRequired();
 
                     b.Navigation("Matiere");
-                });
-
-            modelBuilder.Entity("ApproACI.Models.Livraison", b =>
-                {
-                    b.HasOne("ApproACI.Models.Commande", "Commande")
-                        .WithMany()
-                        .HasForeignKey("CommandeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Commande");
                 });
 
             modelBuilder.Entity("ApproACI.Models.MatiereProduit", b =>

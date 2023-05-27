@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApproACI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230525085222_add_produit_consommation_field_stock_tables")]
-    partial class add_produit_consommation_field_stock_tables
+    [Migration("20230526084755_add_change_many_field_commande_table")]
+    partial class add_change_many_field_commande_table
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,17 +28,20 @@ namespace ApproACI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("DateLivraison")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DateCommande")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateLivraison")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MatiereId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Quantite")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<double>("Quantite")
+                        .HasColumnType("float");
 
-                    b.Property<string>("SemaineCommande")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SemaineCommande")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -69,6 +72,29 @@ namespace ApproACI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DroitAcces");
+                });
+
+            modelBuilder.Entity("ApproACI.Models.Livraison", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommandeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateLivraison")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Quantite")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommandeId");
+
+                    b.ToTable("Livraisons");
                 });
 
             modelBuilder.Entity("ApproACI.Models.Marque", b =>
@@ -230,9 +256,6 @@ namespace ApproACI.Migrations
                     b.Property<string>("Mois")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProduitId")
-                        .HasColumnType("int");
-
                     b.Property<double>("StockDebut")
                         .HasColumnType("float");
 
@@ -242,8 +265,6 @@ namespace ApproACI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MatiereId");
-
-                    b.HasIndex("ProduitId");
 
                     b.ToTable("Stocks");
                 });
@@ -325,6 +346,17 @@ namespace ApproACI.Migrations
                     b.Navigation("Matiere");
                 });
 
+            modelBuilder.Entity("ApproACI.Models.Livraison", b =>
+                {
+                    b.HasOne("ApproACI.Models.Commande", "Commande")
+                        .WithMany()
+                        .HasForeignKey("CommandeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Commande");
+                });
+
             modelBuilder.Entity("ApproACI.Models.MatiereProduit", b =>
                 {
                     b.HasOne("ApproACI.Models.Matiere", "Matiere")
@@ -374,15 +406,7 @@ namespace ApproACI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApproACI.Models.Produit", "Produit")
-                        .WithMany()
-                        .HasForeignKey("ProduitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Matiere");
-
-                    b.Navigation("Produit");
                 });
 
             modelBuilder.Entity("MatiereProduit", b =>

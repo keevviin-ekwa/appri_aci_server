@@ -21,6 +21,7 @@ namespace ApproACI.Repositories.Interfaces
         public IGenericRepository<MatiereProduit> MatiereProduits { get; }
 
         public IGenericRepository<Commande> Commandes { get; }
+        public IGenericRepository<Livraison> Livraisons { get; }
 
         public void Save();
     }

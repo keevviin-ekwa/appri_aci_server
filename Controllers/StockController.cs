@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace ApproACI.Controllers
@@ -65,9 +66,8 @@ namespace ApproACI.Controllers
               
                 var produit = Produits[0];
 
-
-
-                var nom = await _unitOfWork.MatiereProduits.Get(mp => mp.MatiereId == stockDTO.MatiereId && mp.ProduitId == produit.Id);
+                var nom = await _unitOfWork.MatiereProduits.Get(mp => mp.MatiereId == stockDTO.MatiereId && mp.ProduitId == produit.Id, includes:new List<string> { "Matiere"});
+                
                 var LastdayOfYear = new DateTime(DateTime.Now.Year, 12, 31);
                 var numberOfMonht = ((LastdayOfYear.Year - stockDTO.date.Year) * 12) + LastdayOfYear.Month - stockDTO.date.Month;
                 var currentMonthNumber = int.Parse(stockDTO.date.ToString("MM"));
@@ -79,6 +79,39 @@ namespace ApproACI.Controllers
                 var stockFin = stockDebut - consommation;
                 do
                 {
+                    //si le stock de fin est négatif ,
+                    //on doit passer une commande
+                    if (stockFin < 0)
+                    {
+                        var colisage = nom.Matiere.Colissage;
+                        //on recherche le jour pour lequel si la commande était passée alors , le produit serait livré aujourd'hui
+                        var dateCommande = currentMonth.AddDays(-colisage);
+                        Calendar cal = new CultureInfo("en-US").Calendar;
+
+                        var _colisage= nom.Matiere.Colissage;
+                        var Quantite = _colisage;
+                        var unite = 1;
+                        while (_colisage <= consommation)
+                        {
+                            Quantite += _colisage;
+                            unite++;
+                        }
+
+                        var commande = new Commande
+                        {
+                            DateCommande = dateCommande,
+                            DateLivraison = currentMonth,
+                            MatiereId = nom.MatiereId,
+                            Quantite = Quantite,
+                            SemaineCommande = Helpers.GetWeekNumberOfMonth(dateCommande),
+                        };
+
+                         await _unitOfWork.Commandes.Insert(commande);
+                        _unitOfWork.Save();
+                        stockDebut += commande.Quantite;
+                        stockFin = stockDebut - consommation;
+                    }
+
                   
                     var Stock = new Stock
                     {
@@ -102,6 +135,7 @@ namespace ApproACI.Controllers
                     stockFin = stockDebut - consommation;
                     currentMonthNumber++;
                 }
+
                 while (currentMonthNumber<12);
 
 

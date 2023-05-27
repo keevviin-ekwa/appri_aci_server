@@ -1,13 +1,17 @@
-﻿namespace ApproACI.Models
+﻿using System;
+
+namespace ApproACI.Models
 {
     public class Commande
     {
         public int Id { get; set; }
-        public string SemaineCommande { get; set; }
+        public int SemaineCommande { get; set; }
 
-        public string DateLivraison { get; set; }
+        public DateTime DateLivraison { get; set; }
 
-        public string Quantite { get; set; }
+        public double Quantite { get; set; }
+
+        public DateTime DateCommande { get; set; }
 
         public int MatiereId { get; set; }
 

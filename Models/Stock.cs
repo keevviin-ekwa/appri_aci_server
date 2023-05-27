@@ -14,7 +14,6 @@ namespace ApproACI.Models
 
         public double Consommation { get; set; }
 
-      
         public int MatiereId { get; set; }
 
         public Matiere Matiere { get; set; }

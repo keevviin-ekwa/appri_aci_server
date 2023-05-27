@@ -4,14 +4,16 @@ using ApproACI.DLA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApproACI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230526080400_add__datelivraison_field_to_livraison_table")]
+    partial class add__datelivraison_field_to_livraison_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,17 +31,17 @@ namespace ApproACI.Migrations
                     b.Property<DateTime>("DateCommande")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateLivraison")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DateLivraison")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MatiereId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Quantite")
-                        .HasColumnType("float");
+                    b.Property<string>("Quantite")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SemaineCommande")
-                        .HasColumnType("int");
+                    b.Property<string>("SemaineCommande")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
