@@ -133,6 +133,7 @@ namespace ApproACI.Controllers
                 _user.Email=user.Email; 
                 _user.Fonction=user.Fonction;
                 _user.Tel=user.Tel;
+                _user.MotDePasse=Cipher.Encrypt(user.MotDePasse,Helpers.PASSWORD_FOR_ENCRYPTION_AND_DECRYPTION);
                 _user.DroitAcces=user.DroitAcces;
                 _user.Login=user.Login;
                 _user.DateDerniereMaj=DateTime.Now;

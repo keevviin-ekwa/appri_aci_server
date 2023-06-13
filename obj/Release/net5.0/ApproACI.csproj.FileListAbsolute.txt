@@ -73,3 +73,7 @@ C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\obj\Release\net5.0\
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\obj\Release\net5.0\ApproACI.pdb
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\obj\Release\net5.0\ApproACI.genruntimeconfig.cache
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\obj\Release\net5.0\ref\ApproACI.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Release\net5.0\Syncfusion.Data.WPF.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Release\net5.0\Syncfusion.Licensing.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Release\net5.0\Syncfusion.SfGrid.WPF.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Release\net5.0\Syncfusion.Shared.WPF.dll

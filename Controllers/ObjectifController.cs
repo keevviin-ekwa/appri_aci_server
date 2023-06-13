@@ -95,10 +95,6 @@ namespace ApproACI.Controllers
 
                 var temp = await _unitOfWork.Objectifs.Get(o => o.Mois == objectifDTO.Mois);
 
-               
-
-
-                
 
                      temp.ObjectifPF=objectifDTO.ObjectifPF;
                      temp.ObjectifGF=objectifDTO.ObjectifGF;
