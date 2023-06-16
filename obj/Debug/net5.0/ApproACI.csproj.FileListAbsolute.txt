@@ -73,3 +73,7 @@ C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Sy
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Newtonsoft.Json.Bson.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Syncfusion.Data.WPF.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Syncfusion.Licensing.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Syncfusion.SfGrid.WPF.dll
+C:\Users\EKWA\source\repos\Automatisation-appro-aci\ApproACI\bin\Debug\net5.0\Syncfusion.Shared.WPF.dll

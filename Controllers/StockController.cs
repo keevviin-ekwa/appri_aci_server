@@ -103,8 +103,8 @@ namespace ApproACI.Controllers
 
                         await _unitOfWork.Commandes.Insert(commande);
                         _unitOfWork.Save();
-                        stockDebut += commande.Quantite;
-                        stockFin = stockDebut - consommation;
+                       // stockDebut += commande.Quantite;
+                      //S  stockFin = stockDebut - consommation;
                     }
 
 
@@ -112,9 +112,9 @@ namespace ApproACI.Controllers
                     {
                         MatiereId = stockDTO.MatiereId,
 
-                        Consommation = consommation,
-                        StockDebut = stockDebut,
-                        StockFin = stockFin,
+                        Consommation = Math.Round(consommation,1),
+                        StockDebut = Math.Round(stockDebut,1),
+                        StockFin = Math.Round(stockFin, 1),
                         Mois = currentMonth.ToString("MM/yyyy"),
                     };
 
