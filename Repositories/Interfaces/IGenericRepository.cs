@@ -19,7 +19,7 @@ namespace ApproACI.Repositories.Interfaces
 
         Task Insert(T entity);
         Task InsertRange(IEnumerable<T> entities);
-        Task Delete(long id);
+        Task Delete(int id);
         void DeleteRange(IEnumerable<T> entities);
         void Udapte(T entity);
     }

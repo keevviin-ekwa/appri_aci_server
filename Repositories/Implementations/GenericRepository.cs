@@ -67,7 +67,7 @@ namespace ApproACI.Repositories.Implementations
             await _db.AddRangeAsync(entities);
         }
 
-        public async Task Delete(long id)
+        public async Task Delete(int id)
         {
             var _entity = await _db.FindAsync(id);
             _db.Remove(_entity);
