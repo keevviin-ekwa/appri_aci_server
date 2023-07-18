@@ -77,7 +77,46 @@ namespace ApproACI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPut]
+        [Route("UpdateMatiereProduit")]
+        public async Task<IActionResult> UpdateMatiereProduit([FromBody] MatiereProduitDTO matiereProduitDTO)
+        {
+
+            try
+            {
+                
+
+                var _matiereProduit= await _unitOfWork.MatiereProduits.Get(mp=>mp.MatiereId == matiereProduitDTO.MatiereId && mp.ProduitId==matiereProduitDTO.ProduitId);
+                 _matiereProduit.contributionMatierePF=matiereProduitDTO.ContributionMatierePF;
+                _matiereProduit.ContributionMatiereGF=matiereProduitDTO.ContributionMatiereGF;
+                _unitOfWork.MatiereProduits.Udapte(_matiereProduit);
+                _unitOfWork.Save();
+
+                ResponseObject<MatiereProduit> response = new ResponseObject<MatiereProduit>
+                {
+                    Data = null,
+                    Status = ResponseStatus.SUCCESSFUL.ToString(),
+                    Message = "Modification réussie",
+                    DevelopperMessage = "SUCCES",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                ResponseObject<MatiereProduit> response = new ResponseObject<MatiereProduit>
+                {
+                    Data = null,
+                    Status = ResponseStatus.FAILED.ToString(),
+                    Message = "Une érreur s'est produite",
+                    DevelopperMessage = "ECHEC",
+                };
+                return Ok(response);
+            }
+        }
+    
+
+
+    [HttpPost]
         public async Task<IActionResult> CreateMatiereProduit([FromBody] MatiereProduitDTO matiereProduitDTO)
         {
 

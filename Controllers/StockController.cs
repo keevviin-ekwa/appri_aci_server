@@ -75,43 +75,58 @@ namespace ApproACI.Controllers
                 var i = currentMonthNumber;
                 var stockDebut = stockDTO.StockDebut;
                 var objectif = await _unitOfWork.Objectifs.Get(o => o.Mois == stockDTO.date.ToString("MM/yyyy"));
+                
                 var consommation = objectif.ObjectifGF * nom.ContributionMatiereGF + objectif.ObjectifPF * nom.contributionMatierePF;
                 var stockFin = stockDebut - consommation;
+
+                if (stockFin < 0 || stockDebut==0)
+                {
+                    consommation = stockDebut;
+                    stockFin = stockDebut - consommation;
+                }
+                
+
 
                 for (var a = currentMonthNumber; a <=12; a++)
                 {
                     //si le stock de fin est négatif ,
                     //on doit passer une commande
-                    if (stockFin < 0)
+                    if (stockFin <= 0)
                     {
-                        var colisage = nom.Matiere.Colissage;
-                        //on recherche le jour pour lequel si la commande était passée alors , le produit serait livré aujourd'hui
-                        var dateCommande = currentMonth.AddDays(-colisage);
-                        Calendar cal = new CultureInfo("en-US").Calendar;
 
-                        var _colisage = nom.Matiere.Colissage;
-
-
-                        var commande = new Commande
+                        var IfCommande= await _unitOfWork.Commandes.Get(c=>c.MatiereId==stockDTO.MatiereId && c.status==false);
+                        if(IfCommande == null)
                         {
-                            DateCommande = dateCommande,
-                            DateLivraison = currentMonth,
-                            MatiereId = nom.MatiereId,
-                            Quantite = _colisage,
-                            SemaineCommande = Helpers.GetWeekNumberOfMonth(dateCommande),
-                        };
+                            var DelaisLivraison = nom.Matiere.DelaisAppro;
+                            //on recherche le jour pour lequel si la commande était passée alors , le produit serait livré aujourd'hui
+                            var dateCommande = currentMonth.AddDays(-DelaisLivraison);
+                            Calendar cal = new CultureInfo("en-US").Calendar;
 
-                        await _unitOfWork.Commandes.Insert(commande);
-                        _unitOfWork.Save();
-                       // stockDebut += commande.Quantite;
-                      //S  stockFin = stockDebut - consommation;
+                            var _colisage = nom.Matiere.Colissage;
+
+
+                            var commande = new Commande
+                            {
+                                DateCommande = dateCommande,
+                                DateLivraison = currentMonth,
+                                MatiereId = nom.MatiereId,
+                                Quantite = _colisage,
+                                status=false,
+                                SemaineCommande = Helpers.GetWeekNumberOfMonth(dateCommande),
+                            };
+
+                            await _unitOfWork.Commandes.Insert(commande);
+                            _unitOfWork.Save();
+                            // stockDebut += commande.Quantite;
+                            //S  stockFin = stockDebut - consommation;
+                        }
+
                     }
 
 
                     var Stock = new Stock
                     {
                         MatiereId = stockDTO.MatiereId,
-
                         Consommation = Math.Round(consommation,1),
                         StockDebut = Math.Round(stockDebut,1),
                         StockFin = Math.Round(stockFin, 1),
@@ -132,6 +147,12 @@ namespace ApproACI.Controllers
                     consommation = objectif.ObjectifGF * nom.ContributionMatiereGF  + objectif.ObjectifPF * nom.contributionMatierePF ;
                     stockDebut = stockFin;
                     stockFin = stockDebut - consommation;
+
+                    if (stockFin < 0 || stockDebut == 0)
+                    {
+                        consommation = stockDebut;
+                        stockFin = stockDebut - consommation;
+                    }
                     //currentMonthNumber++;
 
                 }
@@ -253,7 +274,7 @@ namespace ApproACI.Controllers
                     //calcul de la cosommation
                     consommation = objectif.ObjectifGF * nom.ContributionMatiereGF / 100 + objectif.ObjectifPF * nom.contributionMatierePF / 100;
 
-                    //recupere le stock du mois suivant
+                    //recupere le stock du mois     
                     stock= await _unitOfWork.Stocks.Get(s=>s.Mois== NextMonth);
 
                     stock.StockDebut = temp.StockFin;// le stock de debut est égale au stock de fin du mois précédent

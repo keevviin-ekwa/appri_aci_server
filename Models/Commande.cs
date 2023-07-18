@@ -11,7 +11,11 @@ namespace ApproACI.Models
 
         public double Quantite { get; set; }
 
+        public double QuantiteLivre { get; set; }
+
         public DateTime DateCommande { get; set; }
+
+        public bool status { get; set; }
 
         public int MatiereId { get; set; }
 

@@ -96,8 +96,9 @@ namespace ApproACI.Controllers
         }
 
 
-        [HttpPut("Id")]
-        public async Task<IActionResult> UpdteMatiere(int Id, [FromBody] UpdateMatiereDTO matiereDTO)
+        [HttpPut]
+        [Route("UpdateMatiere/{Id}")]
+        public async Task<IActionResult> UpdateMatiere(int Id, [FromBody] UpdateMatiereDTO matiereDTO)
         {
 
             try
@@ -106,13 +107,32 @@ namespace ApproACI.Controllers
                 Matiere.Reference = matiereDTO.Reference;
                 Matiere.Designation = matiereDTO.Designation;
                 Matiere.DateModification = DateTime.Now;
+                Matiere.Origine= matiereDTO.Origine;
+                Matiere.Colissage= matiereDTO.Colissage;
+                Matiere.PrixUnitaire= matiereDTO.PrixUnitaire;
+                Matiere.DelaisAppro= matiereDTO.DelaisAppro;
+                
                 _unitOfWork.Matieres.Udapte(Matiere);
                 _unitOfWork.Save();
-                return Ok("Matière première Modifiée avec succès");
+                ResponseObject<Matiere> response = new ResponseObject<Matiere>
+                {
+                    Data = null,
+                    Status = ResponseStatus.SUCCESSFUL.ToString(),
+                    Message = "Matière première Modifiée avec succès",
+                    DevelopperMessage = "SUCCES",
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                return BadRequest("Une erreur s'est produite");
+                ResponseObject<Matiere> response = new ResponseObject<Matiere>
+                {
+                    Data = null,
+                    Status = ResponseStatus.SUCCESSFUL.ToString(),
+                    Message = "Une erreur s'est produite",
+                    DevelopperMessage = "ECHEC",
+                };
+                return BadRequest(response);
             }
         }
 
